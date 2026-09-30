@@ -1,0 +1,27 @@
+{
+  "name": "dvs-data-schema-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Reading website for the working draft of the UK digital verification services trust framework data schema.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "eleventy && npm run build:css",
+    "build:css": "sass --no-source-map --style=compressed --load-path=node_modules --quiet-deps src/site.scss _site/assets/site.css",
+    "start": "npm run build:css && eleventy --serve",
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "dependencies": {
+    "govuk-frontend": "^6.5.1",
+    "nunjucks": "^3.2.4"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "markdown-it": "^15.0.2",
+    "markdown-it-anchor": "^10.0.0",
+    "sass": "^1.105.0"
+  }
+}

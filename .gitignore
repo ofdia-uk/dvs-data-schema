@@ -1,3 +1,7 @@
 # Python
 __pycache__/
 *.pyc
+
+# Rendered site
+docs-site/node_modules/
+docs-site/_site/

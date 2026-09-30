@@ -1,0 +1,75 @@
+{#
+  A page rendered from a Markdown file: a section of the data schema, a
+  contents page, supporting material, or the feedback guidance.
+#}
+{% extends "layouts/base.njk" %}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/pagination/macro.njk" import govukPagination %}
+
+{% set place = repoPath | inGuide %}
+{% set isSchema = repoPath.startsWith("schema-1.0/") %}
+{% set isSupporting = repoPath.startsWith("supporting-material/") %}
+{# Shown above the title and in the browser tab, so a page called "Introduction" says which guide it is in. #}
+{% if place and place.section %}
+  {% set pageContext = place.guide.title %}
+{% elif isSupporting and title != "Supporting material" %}
+  {% set pageContext = "Supporting material" %}
+{% endif %}
+
+{% block breadcrumbs %}
+  {% set crumbs = [{ text: "Home", href: "/" }] %}
+  {% for crumb in repoPath | pagesAbove %}
+    {% set crumbs = (crumbs.push(crumb), crumbs) %}
+  {% endfor %}
+  {{ govukBreadcrumbs({ items: crumbs, collapseOnMobile: true }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop app-prose">
+      {% if place and place.section %}
+        <span class="govuk-caption-l">{{ place.guide.title }}</span>
+      {% elif isSchema %}
+        <span class="govuk-caption-l">Data schema working draft</span>
+      {% elif isSupporting %}
+        <span class="govuk-caption-l">Supporting material: not part of the published data schema</span>
+      {% endif %}
+      <h1 class="govuk-heading-xl" id="{{ titleId }}">{{ title }}</h1>
+
+      {% set headings = content | pageHeadings %}
+      {% if headings | length >= 3 %}
+        <nav class="app-contents-list" aria-labelledby="on-this-page">
+          <h2 class="govuk-heading-s" id="on-this-page">On this page</h2>
+          <ul class="govuk-list">
+            {% for heading in headings %}
+              <li><a class="govuk-link" href="#{{ heading.id }}">{{ heading.text }}</a></li>
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endif %}
+
+      {{ content | safe }}
+
+      {% if isSchema or isSupporting %}
+        <div class="app-page-actions">
+          <h2 class="govuk-heading-m">Give feedback on this page</h2>
+          <p class="govuk-body">
+            You can raise feedback on GitHub. You need a free GitHub account, and you do not need to suggest new wording.
+          </p>
+          <ul class="govuk-list">
+            <li><a class="govuk-link" href="{{ repoPath | feedbackUrl(title) }}">Give feedback on GitHub</a></li>
+            <li><a class="govuk-link" href="{{ repositoryUrl }}/commits/{{ repositoryBranch }}/{{ repoPath }}">See the history of changes to this page</a></li>
+            <li><a class="govuk-link" href="{{ repositoryUrl }}/blob/{{ repositoryBranch }}/{{ repoPath }}">View this page on GitHub</a></li>
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if place and place.section %}
+    {{ govukPagination({
+      previous: { href: place.previous.url, labelText: place.previous.label } if place.previous else null,
+      next: { href: place.next.url, labelText: place.next.label } if place.next else null
+    }) }}
+  {% endif %}
+{% endblock %}

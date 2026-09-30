@@ -2,7 +2,7 @@
   // Rules for the "Markdown formatting" check.
   // To run it in a local copy: npx markdownlint-cli2
   "globs": ["**/*.md"],
-  "ignores": ["**/node_modules/**"],
+  "ignores": ["**/node_modules/**", "docs-site/_site/**"],
   "config": {
     "default": true,
 

@@ -1,0 +1,63 @@
+---
+permalink: /
+layout: layouts/base.njk
+---
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl">{{ site.title }}</h1>
+    <p class="govuk-body-l">Read the working draft of the data schema, maintained by the {{ site.organisation }} (OfDIA).</p>
+
+    <div class="govuk-inset-text">
+      This site shows the working draft. It is not the formally published version and may differ from it.
+      The <a class="govuk-link" href="{{ site.publishedUrl }}">published data schema</a> is on GOV.UK.
+    </div>
+
+    <h2 class="govuk-heading-l">Read the data schema</h2>
+    <p class="govuk-body">
+      The data schema helps digital verification services and relying parties organise and exchange information in a consistent way.
+      It has {{ guides | length }} guides. Each guide has the same {{ guides[0].sections | length }} sections.
+    </p>
+    <p class="govuk-body">
+      The data model shows how the data is structured. The data dictionary, predefined values and predefined lists
+      give the formats and the values each element can have.
+    </p>
+
+    {% for guide in guides %}
+      <h3 class="govuk-heading-m">
+        <a class="govuk-link govuk-link--no-visited-state" href="{{ guide.url }}">{{ guide.title }}</a>
+      </h3>
+      <ul class="govuk-list">
+        {% for section in guide.sections %}
+          <li><a class="govuk-link" href="{{ section.url }}">{{ section.label }}</a></li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+
+    <h3 class="govuk-heading-m">
+      <a class="govuk-link govuk-link--no-visited-state" href="/supporting-material/">Supporting material</a>
+    </h3>
+    <p class="govuk-body">
+      Diagrams, data files you can download, and notes on other standards. They are there to help people use the
+      data schema. They are not part of the published data schema.
+    </p>
+
+    <h2 class="govuk-heading-l">Give feedback</h2>
+    <p class="govuk-body">
+      Anyone can give feedback on the working draft. You need a free GitHub account.
+      You do not need to suggest new wording, and you do not need to know the technical name of a field.
+    </p>
+    <a class="govuk-button" href="{{ repositoryUrl }}/issues/new/choose">Give feedback on GitHub</a>
+    <p class="govuk-body"><a class="govuk-link" href="/feedback/">How to give feedback, and what happens next</a></p>
+
+    <h2 class="govuk-heading-l">See how the draft changes</h2>
+    <p class="govuk-body">
+      Changes are proposed and reviewed on GitHub before OfDIA accepts them. You can see exactly what changed, and why.
+    </p>
+    <ul class="govuk-list govuk-list--bullet">
+      <li><a class="govuk-link" href="{{ repositoryUrl }}/pulls">Proposed changes and their review</a></li>
+      <li><a class="govuk-link" href="{{ repositoryUrl }}/commits/{{ repositoryBranch }}">History of accepted changes</a></li>
+      <li><a class="govuk-link" href="{{ repositoryUrl }}/compare/{{ site.publishedTag }}...{{ repositoryBranch }}">Changes since the published version</a></li>
+      <li><a class="govuk-link" href="{{ repositoryUrl }}/blob/{{ repositoryBranch }}/VERSIONS.md">How versions work</a></li>
+    </ul>
+  </div>
+</div>

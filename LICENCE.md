@@ -19,7 +19,7 @@ The authoritative publication on GOV.UK is also licensed under OGL v3.0 except w
 
 ## Code
 
-All code in this repository — including the workflows under `.github/` and the tools under `tools/` — is released under the MIT License.
+All code in this repository — including the workflows under `.github/`, the tools under `tools/` and the site source under `docs-site/` — is released under the MIT License.
 
 ```text
 MIT License

@@ -39,6 +39,7 @@ jobs:
             --timeout 30
             --accept 200..=299,429
             --exclude-path node_modules
+            --exclude-path docs-site/_site
             "**/*.md" "**/*.yaml" ".github/ISSUE_TEMPLATE/*.yml"
           fail: true
 

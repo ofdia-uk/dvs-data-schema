@@ -5,7 +5,7 @@
 
 # UK digital verification services trust framework data schema: contents
 
-This folder holds OfDIA's working draft of the UK digital verification services (DVS) trust framework data schema. It started from [version 1.0 as published on GOV.UK](https://www.gov.uk/government/publications/uk-digital-verification-services-trust-framework-data-schema-1-0) and may include accepted changes that have not been published yet. [Versions](../VERSIONS.md) explains how to see what has changed since publication.
+This is OfDIA's working draft of the UK digital verification services (DVS) trust framework data schema. It started from [version 1.0 as published on GOV.UK](https://www.gov.uk/government/publications/uk-digital-verification-services-trust-framework-data-schema-1-0) and may include accepted changes that have not been published yet. [Versions](../VERSIONS.md) explains how to see what has changed since publication.
 
 The data schema has 2 guides. Each guide covers one good practice guide (GPG) and has the same 6 sections:
 

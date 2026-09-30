@@ -23,7 +23,7 @@ A change accepted here does not change the published data schema. Changes take e
 
 ## Read the data schema
 
-The data schema has 2 guides. Each guide has the same 6 sections. Start from the [contents page](schema-1.0/README.md), or go straight to a section.
+The data schema has 2 guides. Each guide has the same 6 sections. Start from the [contents page](schema-1.0/README.md), or go straight to a section. You can also [read it on the website](https://ofdia-uk.github.io/dvs-data-schema/), which is easier to read if you do not use GitHub.
 
 The data model shows how the data is structured. The data dictionary, predefined values and predefined lists give the formats and the values each element can have.
 

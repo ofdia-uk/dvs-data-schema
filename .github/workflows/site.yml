@@ -1,0 +1,95 @@
+name: Reading site
+
+# Builds the reading site from the Markdown in this repository.
+#
+# - On every pull request: build the site and check it. Nothing is published.
+# - On every change to the default branch: build and check it, then publish it
+#   to GitHub Pages if this repository is set up to publish.
+#
+# Publishing requires GitHub Pages to be enabled with "GitHub Actions" as its
+# source (Settings > Pages). A fork publishes only if its owner has also set
+# the repository variable PUBLISH_PREVIEW to "true". docs-site/README.md
+# explains how to publish a preview from a fork.
+
+on:
+  pull_request:
+  push:
+    branches: [main, "preview/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reading-site-${{ github.ref }}
+  # Let a publish finish; replace superseded pull request builds.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  # Publish only from the default branch, never from a pull request, and from
+  # a fork only when its owner has asked for a preview.
+  PUBLISH: >-
+    ${{ github.event_name != 'pull_request'
+        && github.ref_name == github.event.repository.default_branch
+        && (!github.event.repository.fork || vars.PUBLISH_PREVIEW == 'true') }}
+
+jobs:
+  build:
+    name: Build and check the site
+    runs-on: ubuntu-latest
+    outputs:
+      publish: ${{ env.PUBLISH }}
+    env:
+      # GitHub Pages serves a project site from /<repository name>/.
+      PATH_PREFIX: /${{ github.event.repository.name }}/
+      # Feedback, history and source links go to the repository and branch the
+      # site is built for, so a preview from a fork links to the fork.
+      REPOSITORY_URL: ${{ github.server_url }}/${{ github.repository }}
+      REPOSITORY_BRANCH: ${{ github.event.repository.default_branch }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: docs-site/.nvmrc
+          cache: npm
+          cache-dependency-path: docs-site/package-lock.json
+
+      - name: Install dependencies
+        working-directory: docs-site
+        run: npm ci
+
+      - name: Test the Markdown rendering
+        working-directory: docs-site
+        run: npm test
+
+      - name: Build the site
+        working-directory: docs-site
+        run: npm run build
+
+      - name: Check links, anchors, headings, tables and the draft banner
+        run: python3 tools/check_site.py docs-site/_site --path-prefix "$PATH_PREFIX"
+
+      - name: Upload the site for publishing
+        if: env.PUBLISH == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: docs-site/_site
+
+  publish:
+    name: Publish to GitHub Pages
+    needs: build
+    if: needs.build.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write # to publish the site
+      id-token: write # to verify the publish request came from this workflow
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v5

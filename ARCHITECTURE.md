@@ -37,6 +37,7 @@ A change to the schema text is a change to what the data schema says if it alter
 | `media/` | The OfDIA banner image |
 | `tools/` | The caution banner source, and the tools used by the checks, with their tests |
 | `.github/` | Issue forms, pull request template, code owners and workflows |
+| `docs-site/` | Source for the [reading site](https://ofdia-uk.github.io/dvs-data-schema/), built from the Markdown and published from `main` |
 
 ## How the text is structured
 
@@ -89,7 +90,7 @@ To change the wording:
 
 The tool changes only the lines between the markers. It also adds the banner to a file that clearly has none. For anything unexpected it changes nothing and reports the file. That includes a banner without markers, text directly under the banner, duplicate or damaged markers, a byte order mark or front matter. Fix those files by hand. This is deliberate: the tool never guesses where the banner ends and the schema text begins.
 
-Files under `.github/` and `tools/` do not need the banner.
+Files under `.github/`, `tools/` and `docs-site/` do not need the banner.
 
 ## Data files
 
@@ -115,6 +116,12 @@ The **Repository checks** workflow runs on every pull request and every change t
 | Markdown formatting | Markdown files follow the rules in `.markdownlint-cli2.jsonc` | That the text is correct |
 | Data files match the schema | The data files written by a tool are up to date, and `data-dictionary.csv` lists every element in the data model | That hand-written descriptions, views and diagrams are correct |
 
+The **Reading site** workflow also runs on every pull request and every change to `main`:
+
+| Check | Confirms | Does not confirm |
+| --- | --- | --- |
+| Build and check the site | The site builds, its rendering tests pass, and every page has working internal links and anchors, working downloads, ordered headings, table headings, image alt text and the draft banner. The tests include showing every example and table cell in the section files exactly as written | That the site is published, or anything about the schema text |
+
 The **External checks** workflow runs once a week and can be run by hand. It depends on other websites, so it is kept apart from the checks on pull requests.
 
 | Check | Confirms | Does not confirm |
@@ -124,7 +131,11 @@ The **External checks** workflow runs once a week and can be run by hand. It dep
 
 On a pull request, GitHub runs the workflows and tools as changed by that pull request. A passing check therefore does not show that the checks themselves were left intact. Review changes to `.github/` and `tools/` with that in mind.
 
-### Run the checks in a local copy
+## Reading site
+
+The [reading site](https://ofdia-uk.github.io/dvs-data-schema/) shows the working draft to people who would rather not use GitHub. It renders the Markdown files directly and keeps no copy of the text. Changes to `main` are published automatically. Pull requests are built and checked but never published. The site is not part of GOV.UK, so it uses the GOV.UK Design System's Generic header and none of the GOV.UK branding. It uses the same design as the trust framework reading site. [`docs-site/README.md`](docs-site/README.md) explains how it works, how to run it, and how to publish a preview from a fork.
+
+## Run the checks in a local copy
 
 You need Python 3. For the Markdown formatting check you also need Node.js.
 

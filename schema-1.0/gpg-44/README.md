@@ -5,7 +5,7 @@
 
 # GPG 44: authentication
 
-This folder holds the data taxonomy, data model and data dictionary for [How to use authenticators to protect an online service](https://www.gov.uk/government/publications/how-to-use-authenticators-to-protect-an-online-service-1-0), also known as Good Practice Guide (GPG) 44.
+This guide is the data taxonomy, data model and data dictionary for [How to use authenticators to protect an online service](https://www.gov.uk/government/publications/how-to-use-authenticators-to-protect-an-online-service-1-0), also known as Good Practice Guide (GPG) 44.
 
 These sections are part of OfDIA's working draft. For the published version, see the [data schema for GPG 44 on GOV.UK](https://www.gov.uk/government/publications/uk-digital-verification-services-trust-framework-data-schema-1-0/data-taxonomy-data-model-and-data-dictionary-for-gpg-44).
 

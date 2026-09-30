@@ -1,0 +1,111 @@
+// Styles for the reading site.
+//
+// The site is not part of GOV.UK, so GOV.UK Frontend is configured without
+// the GDS Transport font (a system font is used instead) and without the
+// GOV.UK brand colour.
+
+@use "govuk-frontend/dist/govuk" as * with (
+  $govuk-font-family: (arial, sans-serif),
+  $govuk-functional-colours: (
+    brand: (name: "black"),
+  ),
+);
+
+$app-monospace: ui-monospace, menlo, consolas, "Courier New", monospace;
+
+.app-prose img {
+  max-width: 100%;
+  height: auto;
+}
+
+// A long run of text with no spaces, such as
+// "region(s)/state(s)/province(s)/municipality(ies)", breaks onto the next
+// line on a narrow screen instead of making the page scroll sideways.
+.app-prose {
+  overflow-wrap: break-word;
+}
+
+// List items in the text are separated by blank lines, so each holds a
+// paragraph. Keep the list's own spacing, not the paragraph's.
+.app-prose li > .govuk-body:last-child {
+  margin-bottom: 0;
+}
+
+// Anything wider than the page scrolls sideways inside its own box, so the
+// page itself never does. assets/init.js makes a box focusable when it
+// actually scrolls, so that it can be scrolled from the keyboard.
+.app-scroll {
+  overflow-x: auto;
+
+  &:focus {
+    outline: $govuk-focus-width solid govuk-functional-colour(focus);
+    outline-offset: 0;
+    box-shadow: inset 0 0 0 $govuk-focus-width govuk-functional-colour(text);
+  }
+}
+
+.app-table-wrapper {
+  margin-bottom: govuk-spacing(6);
+
+  .govuk-table {
+    margin-bottom: 0;
+  }
+}
+
+// In tables, a long name such as civil_partnership_certificate can break
+// after an underscore (lib/markdown.js adds the break points). That is only
+// wanted on a small screen, where one name could fill the width.
+.govuk-table wbr {
+  @include govuk-media-query($from: tablet) {
+    display: none;
+  }
+}
+
+// The text column is two-thirds of the page on a wide screen. A table with
+// 4 or more columns uses the full width instead (150% of two-thirds).
+.app-table-wrapper--wide {
+  @include govuk-media-query($from: desktop) {
+    width: 150%;
+  }
+}
+
+// Data model examples. The indentation is part of the example: it shows
+// which elements belong to which. Lines are never wrapped.
+.schema-example,
+.app-code-block {
+  @include govuk-font($size: 16);
+
+  margin: 0 0 govuk-spacing(6);
+  padding: govuk-spacing(3);
+  border: 1px solid govuk-functional-colour(border);
+  border-left: govuk-spacing(1) solid govuk-functional-colour(border);
+  background: govuk-functional-colour(surface-background);
+  color: govuk-functional-colour(text);
+  font-family: $app-monospace;
+  white-space: pre;
+  tab-size: 4;
+}
+
+// Links and code inside an example keep its fixed-width font, so that the
+// indentation lines up.
+.schema-example .govuk-link,
+.app-code-block code {
+  font-family: inherit;
+}
+
+.app-code {
+  font-family: $app-monospace;
+  font-size: 0.95em;
+}
+
+.app-contents-list {
+  margin-bottom: govuk-spacing(6);
+  padding-bottom: govuk-spacing(2);
+  border-bottom: 1px solid govuk-functional-colour(border);
+}
+
+.app-page-actions {
+  margin-top: govuk-spacing(8);
+  padding-top: govuk-spacing(4);
+  border-top: 2px solid govuk-functional-colour(brand);
+}
