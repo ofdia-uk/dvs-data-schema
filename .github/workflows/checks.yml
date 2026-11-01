@@ -55,7 +55,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Check Markdown files against the rules in .markdownlint-cli2.jsonc
-        uses: DavidAnson/markdownlint-cli2-action@v24
+        uses: DavidAnson/markdownlint-cli2-action@v25
         with:
           globs: "**/*.md"
 
